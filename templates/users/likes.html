@@ -3,6 +3,6 @@
 
 <!-- Messages display imported from macro -->
 {% import 'users/macros.html' as macros%}
-{{ macros.messages_on_profile(user.messages|sort(attribute='timestamp', reverse=True))}}
+{{ macros.messages_on_profile(user.likes|sort(attribute='timestamp', reverse=True))}}
 
 {% endblock %}

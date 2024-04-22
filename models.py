@@ -163,12 +163,14 @@ class User(db.Model):
         user = cls.query.filter_by(username=username).first()
 
         if user:
-            is_auth = bcrypt.check_password_hash(user.password, password)
-            if is_auth:
-                return user
-
-        return False
-
+            try:
+                is_auth = bcrypt.check_password_hash(user.password, password)
+                if is_auth:
+                    return user
+            except ValueError:
+                return False
+        else:
+            return False
 
 class Message(db.Model):
     """An individual message ("warble")."""

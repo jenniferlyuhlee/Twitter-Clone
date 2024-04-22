@@ -11,8 +11,7 @@
   <script src="https://unpkg.com/popper"></script>
   <script src="https://unpkg.com/bootstrap"></script>
 
-  <link rel="stylesheet"
-        href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <script src="https://kit.fontawesome.com/6d2c09170e.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="/static/stylesheets/style.css">
   <link rel="shortcut icon" href="/static/favicon.ico">
 </head>
@@ -52,10 +51,10 @@
     </ul>
   </div>
 </nav>
+{% for category, message in get_flashed_messages(with_categories=True) %}
+<div id = "flash" class="text-center alert alert-{{ category }}">{{ message }}</div>
+{% endfor %}
 <div class="container">
-  {% for category, message in get_flashed_messages(with_categories=True) %}
-  <div class="alert alert-{{ category }}">{{ message }}</div>
-  {% endfor %}
 
   {% block content %}
   {% endblock %}
