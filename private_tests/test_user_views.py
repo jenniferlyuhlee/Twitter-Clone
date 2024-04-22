@@ -70,6 +70,9 @@ class UserViewTestCase(TestCase):
 
     def test_users_index(self):
         with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.testuser.id
+            
             resp = c.get("/users")
 
             self.assertIn("@testuser", str(resp.data))
@@ -80,6 +83,9 @@ class UserViewTestCase(TestCase):
 
     def test_users_search(self):
         with self.client as c:
+            with c.session_transaction() as sess:
+                sess[CURR_USER_KEY] = self.testuser.id
+            
             resp = c.get("/users?q=test")
 
             self.assertIn("@testuser", str(resp.data))
@@ -143,7 +149,7 @@ class UserViewTestCase(TestCase):
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.testuser_id
 
-            resp = c.post("/messages/1984/like", follow_redirects=True)
+            resp = c.post("/users/add_like/1984", follow_redirects=True)
             self.assertEqual(resp.status_code, 200)
 
             likes = Likes.query.filter(Likes.message_id == 1984).all()
@@ -168,7 +174,7 @@ class UserViewTestCase(TestCase):
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.testuser_id
 
-            resp = c.post(f"/messages/{m.id}/like", follow_redirects=True)
+            resp = c.post(f"/users/add_like/{m.id}", follow_redirects=True)
             self.assertEqual(resp.status_code, 200)
 
             likes = Likes.query.filter(Likes.message_id == m.id).all()
@@ -184,7 +190,7 @@ class UserViewTestCase(TestCase):
         like_count = Likes.query.count()
 
         with self.client as c:
-            resp = c.post(f"/messages/{m.id}/like", follow_redirects=True)
+            resp = c.post(f"/users/add_like/{m.id}", follow_redirects=True)
             self.assertEqual(resp.status_code, 200)
 
             self.assertIn("Access unauthorized", str(resp.data))
