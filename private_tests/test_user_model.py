@@ -5,7 +5,7 @@
 #    python -m unittest test_user_model.py
 
 
-from app import app
+
 import os
 from unittest import TestCase
 from sqlalchemy import exc
@@ -21,7 +21,7 @@ os.environ['DATABASE_URL'] = "postgresql:///warbler-test"
 
 
 # Now we can import app
-
+from app import app
 
 # Create our tables (we do this here, so we only create the tables
 # once for all tests --- in each test, we'll delete the data
